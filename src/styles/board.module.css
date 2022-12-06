@@ -1,0 +1,46 @@
+.tilesGrid {
+  display: inline-grid;
+
+  gap: var(--gap);
+
+  grid-template-columns: repeat(var(--width), 1fr);
+  grid-template-rows: repeat(var(--height), 1fr);
+}
+
+.tilesGrid > * {
+  border-radius: 20%;
+
+  padding: 0;
+  width: var(--tileSize);
+  height: var(--tileSize);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.update {
+  animation: update forwards 500ms ease-in-out;
+}
+
+img {
+  width: 90%;
+  height: 80%;
+}
+
+.open {
+  background-color: #2e2e2e;
+}
+
+@keyframes update {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+    transform: rotate(360deg);
+  }
+}

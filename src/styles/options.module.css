@@ -1,0 +1,31 @@
+.options {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+
+  position: absolute;
+  top: 0;
+
+  width: 100%;
+  padding-block: 20px;
+  padding-inline: 25px;
+
+  /*   background: rgb(0, 0, 0);
+  background: linear-gradient(rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0.5) 60%, rgba(0, 0, 0, 0) 100%); */
+}
+
+.options > * {
+  height: 40px;
+  flex-grow: 1;
+}
+
+.updateButton {
+  background-color: var(--accent-color);
+  transition: all 200ms;
+  color: var(--background-color);
+}
+
+.updateButton:hover {
+  border: 1px solid transparent;
+}

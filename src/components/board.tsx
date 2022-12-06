@@ -42,6 +42,8 @@ export default function Board({
       return
     }
 
+    newArr[i].isFlagged = false
+
     newArr[i].isOpen = true
     newArr[i].number = nearChecks.getNumberOfBombsAround({ tile, tiles })
 
@@ -82,8 +84,12 @@ export default function Board({
             }
           >
             {tile.number && !tile.isBomb ? tile.number : ''}
-            {tile.isBomb && !gameStarted ? <img src={bomb} alt="Bomb" /> : undefined}
-            {tile.isFlagged && gameStarted ? <img src={flag} alt="Flag" /> : undefined}
+            {tile.isBomb && !gameStarted ? (
+              <img draggable="false" src={bomb} alt="Bomb" />
+            ) : undefined}
+            {tile.isFlagged && gameStarted ? (
+              <img draggable="false" src={flag} alt="Flag" />
+            ) : undefined}
           </button>
         )
       })}

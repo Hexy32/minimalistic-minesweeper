@@ -51,11 +51,11 @@ function getNumberOfBombs(difficulty: string, tilesTotal: number) {
     case 'easy':
       return Math.round(tilesTotal * 0.1)
     case 'medium':
-      return Math.round(tilesTotal * 0.2)
+      return Math.round(tilesTotal * 0.15)
     case 'hard':
-      return Math.round(tilesTotal * 0.3)
+      return Math.round(tilesTotal * 0.2)
     case 'master':
-      return Math.round(tilesTotal * 0.4)
+      return Math.round(tilesTotal * 0.25)
 
     default:
       throw new Error('Difficulty not found!')

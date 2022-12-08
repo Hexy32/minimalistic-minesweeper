@@ -28,7 +28,6 @@ export default function Board({
     const newArr = [...tiles]
 
     if (!gameStarted) {
-      console.log('bomb')
       do {
         generateBombs(width, height, difficulty, tiles, setTiles)
       } while (tile?.isBomb === true)

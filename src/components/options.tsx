@@ -1,4 +1,5 @@
 import styles from '../styles/options.module.css'
+import uiStyles from '../styles/ui.module.css'
 
 export default function Options({
   difficulty,
@@ -43,7 +44,7 @@ export default function Options({
   const difficulties = ['Easy', 'Medium', 'Hard', 'Master']
 
   return (
-    <section className={styles.options}>
+    <section className={uiStyles.ui}>
       <select
         onChange={e => handleUpdate(e.currentTarget)}
         name="Difficulty"

@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react'
 
 import Board from './components/board'
 import Options from './components/options'
+import Result from './components/resultOverlay'
+import Stats from './components/stats'
 import calculateItemSize from './util/calculateItemSize'
 import { createTiles } from './util/createTiles'
 import styles from './styles/app.module.css'
@@ -35,6 +37,7 @@ export default function App() {
 
   return (
     <div className={styles.app}>
+      {/* <Result /> */}
       <Options
         difficulty={difficulty}
         setDifficulty={setDifficulty}
@@ -51,6 +54,7 @@ export default function App() {
         gameStarted={gameStarted}
         setGameStarted={setGameStarted}
       />
+      <Stats gameStarted={gameStarted} tiles={tiles} />
     </div>
   )
 }

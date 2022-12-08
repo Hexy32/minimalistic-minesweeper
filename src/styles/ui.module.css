@@ -1,0 +1,18 @@
+.ui {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+
+  position: absolute;
+  top: 0;
+
+  width: 100%;
+  padding-block: 20px;
+  padding-inline: 25px;
+}
+
+.ui > * {
+  height: 40px;
+  flex-grow: 1;
+}

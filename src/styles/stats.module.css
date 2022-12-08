@@ -1,0 +1,20 @@
+.stats {
+  bottom: 0;
+  top: auto;
+  position: absolute;
+}
+
+.stats > * {
+  background-color: var(--main-color);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-inline: 1rem;
+
+  border-radius: 8px;
+}
+
+.stats > * > *:nth-child(2) {
+  margin-left: auto;
+}

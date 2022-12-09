@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 
 import { Tile } from '../App'
 import bomb from '../assets/bomb.svg'
@@ -16,8 +16,12 @@ export default function Board({
   gameStarted,
   setGameStarted,
 }: BoardProps) {
+  const [gameOver, setGameOver] = useState(false)
+
+  //Restart game if there is any change to the settings
   useEffect(() => {
     setGameStarted(false)
+    setGameOver(false)
   }, [width, height, difficulty])
 
   function handleClick(e: React.MouseEvent<HTMLButtonElement>) {
@@ -26,6 +30,8 @@ export default function Board({
     const i = tiles.indexOf(tile)
 
     const newArr = [...tiles]
+
+    if (gameOver) return
 
     if (!gameStarted) {
       do {
@@ -37,6 +43,7 @@ export default function Board({
 
     if (tile.isBomb) {
       //Game over code here
+      setGameOver(true)
       setGameStarted(false)
       return
     }

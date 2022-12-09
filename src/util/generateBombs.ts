@@ -8,11 +8,11 @@ export default function generateBombs(
   setTiles: React.Dispatch<React.SetStateAction<Tile[]>>
 ) {
   const newArr = [...tiles]
-
-  newArr.forEach(tile => (tile.isBomb = false))
+  const numberOfBombs = getNumberOfBombs(difficulty, width * height)
 
   const finalCords = [] as Cords[]
-  for (let i = 0; i < getNumberOfBombs(difficulty, width * height); i++) {
+
+  for (let i = 0; i < numberOfBombs; i++) {
     let randomCords: Cords
 
     do {
@@ -21,20 +21,26 @@ export default function generateBombs(
         y: Math.ceil(Math.random() * height),
       }
 
+      // If there are no cords in the finalCords array, break the loop
       if (finalCords.length === 0) break
     } while (finalCords.some(cords => cords.x === randomCords.x && cords.y === randomCords.y))
 
     finalCords.push(randomCords)
 
+    // Find the index of the tile with the randomly generated cords
     const index = newArr.findIndex(
       ({ cords }) => cords.x === randomCords.x && cords.y === randomCords.y
     )
+
+    // If the index is not found, throw an error
     if (index === -1) {
       console.table(tiles)
       throw new Error(
         `Cant generate bomb, cord not found! Cords: ${randomCords.x} ${randomCords.y}`
       )
     }
+
+    // Set the tile at the given index to be a bomb
     newArr[index].isBomb = true
   }
 

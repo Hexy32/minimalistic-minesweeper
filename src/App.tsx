@@ -1,8 +1,9 @@
-import { useEffect, useReducer } from 'react'
+import { useEffect, useMemo, useReducer } from 'react'
 
-import Board from './components/board'
-import Options from './components/options'
-import Stats from './components/stats'
+import Board from './components/Board'
+import Completion from './components/Completion'
+import Options from './components/Options'
+import Stats from './components/Stats'
 import { createTiles } from './util/createTiles'
 import styles from './styles/app.module.css'
 
@@ -10,6 +11,8 @@ const DEFAULT_GAME: Game = {
   tiles: [],
   started: false,
   over: false,
+  hasWon: false,
+  finalTime: 0,
   difficulty: 'easy',
   dimensions: {
     width: 10,
@@ -19,7 +22,6 @@ const DEFAULT_GAME: Game = {
 
 export default function App() {
   function reducer(game: Game, action: Action) {
-    console.log(action.type, action.type !== 'regenerate-board' && action.payload, game)
     switch (action.type) {
       case 'set-tiles':
         return {
@@ -57,6 +59,16 @@ export default function App() {
             height: action.payload,
           },
         }
+      case 'set-has-won':
+        return {
+          ...game,
+          hasWon: action.payload,
+        }
+      case 'set-final-time':
+        return {
+          ...game,
+          finalTime: action.payload,
+        }
       case 'regenerate-board':
         return {
           ...game,
@@ -78,11 +90,20 @@ export default function App() {
     })
   }, [])
 
+  useEffect(() => {
+    if (!game.tiles.some(tile => !tile.isOpen && !tile.isBomb) && game.started) {
+      dispatch({ type: 'set-has-won', payload: true })
+    } else if (game.hasWon) {
+      dispatch({ type: 'set-has-won', payload: false })
+    }
+  }, [game.tiles])
+
   return (
     <div className={styles.app}>
+      {game.hasWon || (game.over && <Completion game={game} dispatch={dispatch} />)}
       <Options game={game} dispatch={dispatch} />
       <Board game={game} dispatch={dispatch} />
-      <Stats game={game} />
+      <Stats game={game} dispatch={dispatch} />
     </div>
   )
 }
@@ -91,6 +112,8 @@ export type Game = {
   tiles: Tile[]
   started: boolean
   over: boolean
+  hasWon: boolean
+  finalTime: number
   difficulty: Difficulty
   dimensions: {
     width: number
@@ -103,11 +126,11 @@ export type Difficulty = 'easy' | 'medium' | 'hard' | 'master'
 export type Action =
   | { type: 'set-difficulty'; payload: Difficulty }
   | {
-      type: 'set-width' | 'set-height'
+      type: 'set-width' | 'set-height' | 'set-final-time'
       payload: number
     }
   | {
-      type: 'set-started' | 'set-over'
+      type: 'set-started' | 'set-over' | 'set-has-won'
       payload: boolean
     }
   | {
@@ -126,5 +149,6 @@ export type Tile = {
   isBomb: boolean
   isOpen: boolean
   isFlagged: boolean
+  hasOne: boolean
   number?: number
 }

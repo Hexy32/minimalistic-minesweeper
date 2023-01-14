@@ -24,12 +24,11 @@ export default function Board({ game, dispatch }: BoardProps) {
 
     const newArr = [...game.tiles]
 
-    if (game.over) return
+    if (game.over || game.hasWon) return
 
     if (!game.started) {
       do {
         generateBombs(game, dispatch)
-        console.log('generating bombs')
       } while (tile?.isBomb === true)
 
       dispatch({ type: 'set-started', payload: true })
@@ -55,7 +54,7 @@ export default function Board({ game, dispatch }: BoardProps) {
   function handleRightClick(e: React.MouseEvent<HTMLButtonElement>) {
     e.preventDefault()
 
-    if (!game.started) return
+    if (!game.started || game.hasWon) return
 
     const [x, y] = e.currentTarget.id.split(' ')
     const tile = game.tiles.find(({ cords }) => cords.x === parseInt(x) && cords.y === parseInt(y))!
@@ -70,8 +69,6 @@ export default function Board({ game, dispatch }: BoardProps) {
     dispatch({ type: 'set-tiles', payload: newArr })
   }
 
-  console.log('Board info: ', game)
-
   return (
     <main className={styles.tilesGrid}>
       {game.tiles.map((tile, i) => {
@@ -81,9 +78,7 @@ export default function Board({ game, dispatch }: BoardProps) {
             onContextMenu={handleRightClick}
             key={i}
             id={tile.cords.x + ' ' + tile.cords.y}
-            className={
-              tile.isBomb ? undefined : undefined + ' ' + (tile.isOpen ? styles.open : undefined)
-            }
+            className={tile.isOpen ? styles.open : undefined}
           >
             {tile.number && !tile.isBomb ? tile.number : ''}
             {tile.isBomb && !game.started ? (

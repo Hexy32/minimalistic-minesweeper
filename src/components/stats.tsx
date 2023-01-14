@@ -1,10 +1,10 @@
+import { Action, Game } from '../App'
 import { useEffect, useState } from 'react'
 
-import { Game } from '../App'
 import styles from '../styles/stats.module.css'
 import uiStyles from '../styles/ui.module.css'
 
-export default function Stats({ game }: StatsProps) {
+export default function Stats({ game, dispatch }: StatsProps) {
   const [timerRunning, setTimerRunning] = useState(false)
   const [timePassed, setTimePassed] = useState(0)
   const [intervalId, setIntervalId] = useState(0)
@@ -12,13 +12,13 @@ export default function Stats({ game }: StatsProps) {
 
   useEffect(() => {
     if (game.started && !timerRunning) startTimer()
-    if (!game.started && timerRunning) stopTimer()
+    if ((!game.started && timerRunning) || game.hasWon) stopTimer()
 
     const totalBombs = game.tiles.filter(tile => tile.isBomb === true).length
     const totalFlags = game.tiles.filter(tile => tile.isFlagged === true).length
 
     setBombsRemaining(totalBombs - totalFlags)
-  }, [game.started, game.tiles])
+  }, [game.started, game.tiles, game.hasWon])
 
   function startTimer() {
     setTimerRunning(true)
@@ -33,6 +33,7 @@ export default function Stats({ game }: StatsProps) {
   }
 
   function stopTimer() {
+    dispatch({ type: 'set-final-time', payload: timePassed })
     setTimerRunning(false)
     //Stop timer code
     clearInterval(intervalId)
@@ -57,4 +58,5 @@ export default function Stats({ game }: StatsProps) {
 
 type StatsProps = {
   game: Game
+  dispatch: React.Dispatch<Action>
 }

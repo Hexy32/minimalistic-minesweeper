@@ -35,18 +35,18 @@ a {
 
 button {
   border-radius: 8px;
-  border: 1px solid transparent;
+  border: none;
   padding: 0.6em 1.2em;
   font-size: 1em;
   font-weight: 500;
   font-family: inherit;
   background-color: var(--main-color);
   cursor: pointer;
-  transition: border-color 0.25s;
+  outline: var(--accent-color);
+  transition: outline 100ms;
 }
 button:hover {
-  border-color: var(--accent-color);
-  border-width: 3px;
+  outline: var(--accent-color) 3px solid;
 }
 button:focus,
 button:focus-visible {

@@ -19,15 +19,21 @@ export default function Options({ game, dispatch }: OptionsProps) {
     function toggleInputs(lockOrUnlock: boolean) {
       if (lockOrUnlock) {
         currentTarget.style.backgroundColor = '#f15252'
+        currentTarget.title = 'Must be between 5 and 50!'
         inputLock = true
       } else {
         currentTarget.style.backgroundColor = buttonColor
+        currentTarget.title = ''
         inputLock = false
       }
     }
 
-    if (width > 50 || height > 50 || width <= 4 || height <= 4) {
-      toggleInputs(true)
+    const widthConstraint = width <= 4 || width > 50
+    const heightConstraint = height <= 4 || height > 50
+
+    if (widthConstraint || heightConstraint) {
+      if (currentTarget.id === 'width' && widthConstraint) toggleInputs(true)
+      if (currentTarget.id === 'height' && heightConstraint) toggleInputs(true)
       return
     }
 
@@ -46,6 +52,7 @@ export default function Options({ game, dispatch }: OptionsProps) {
       <select
         onChange={e => handleUpdate(e.currentTarget)}
         name="Difficulty"
+        id="difficulty"
         defaultValue={game.difficulty}
       >
         {difficulties.map(diff => {
@@ -60,6 +67,7 @@ export default function Options({ game, dispatch }: OptionsProps) {
         onChange={e => handleUpdate(e.currentTarget)}
         type="number"
         name="Width Input"
+        id="width"
         placeholder="Width: 5 - 50"
         max={50}
         min={5}
@@ -68,12 +76,17 @@ export default function Options({ game, dispatch }: OptionsProps) {
         onChange={e => handleUpdate(e.currentTarget)}
         type="number"
         name="Height Input"
+        id="height"
         placeholder="Height: 5 - 50"
         max={50}
         min={5}
       />
       <span />
-      <button className={styles.updateButton} onClick={e => handleUpdate(e.currentTarget)}>
+      <button
+        className={styles.updateButton}
+        id="reset"
+        onClick={e => handleUpdate(e.currentTarget)}
+      >
         Reset Board
       </button>
     </section>

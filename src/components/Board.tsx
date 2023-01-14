@@ -29,13 +29,10 @@ export default function Board({ game, dispatch }: BoardProps) {
     if (!game.started) {
       do {
         generateBombs(game, dispatch)
-        console.log(tile, game.tiles)
       } while (tile.isBomb || nearChecks.getNumberOfBombsAround({ tile, game }))
 
       dispatch({ type: 'set-started', payload: true })
     }
-
-    console.log(game.tiles)
 
     if (tile.isBomb) {
       //Game over code here

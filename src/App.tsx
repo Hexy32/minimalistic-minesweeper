@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useReducer } from 'react'
+import { useEffect, useReducer } from 'react'
 
 import Board from './components/Board'
 import Completion from './components/Completion'
@@ -149,6 +149,5 @@ export type Tile = {
   isBomb: boolean
   isOpen: boolean
   isFlagged: boolean
-  hasOne: boolean
   number?: number
 }

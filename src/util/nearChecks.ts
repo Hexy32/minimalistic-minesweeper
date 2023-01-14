@@ -32,6 +32,7 @@ export default class nearChecks {
 
         const i = game.tiles.indexOf(currentTile)
         newArr[i].isOpen = true
+        newArr[i].isFlagged = false
         newArr[i].number = this.getNumberOfBombsAround({ tile: currentTile, game })
 
         if (tile.cords.x === x && tile.cords.y === y) continue

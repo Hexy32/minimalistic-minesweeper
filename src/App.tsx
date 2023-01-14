@@ -112,8 +112,8 @@ export default function App() {
       }
     }
 
-    // window.removeEventListener('keyup', handleKeys)
-    // window.addEventListener('keyup', handleKeys)
+    window.removeEventListener('keyup', handleKeys)
+    window.addEventListener('keyup', handleKeys)
   }, [])
 
   useEffect(() => {

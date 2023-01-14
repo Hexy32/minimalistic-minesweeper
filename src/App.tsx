@@ -88,6 +88,32 @@ export default function App() {
       type: 'set-tiles',
       payload: createTiles(game.dimensions.width, game.dimensions.height),
     })
+    function handleKeys(e: KeyboardEvent) {
+      console.log(e.key)
+      if (e.key === 'r') {
+        return dispatch({ type: 'regenerate-board' })
+      }
+
+      return //NEEDS MORE WORK
+
+      const currentElement = document.activeElement as HTMLElement
+      if (currentElement.dataset.tile) {
+        console.log(currentElement)
+      }
+      switch (e.key) {
+        case 'ArrowUp':
+          break
+        case 'ArrowLeft':
+          break
+        case 'ArrowRight':
+          break
+        case 'ArrowDown':
+          break
+      }
+    }
+
+    // window.removeEventListener('keyup', handleKeys)
+    // window.addEventListener('keyup', handleKeys)
   }, [])
 
   useEffect(() => {

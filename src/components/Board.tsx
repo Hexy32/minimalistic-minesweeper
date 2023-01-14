@@ -24,7 +24,7 @@ export default function Board({ game, dispatch }: BoardProps) {
 
     const newArr = [...game.tiles]
 
-    if (game.over || game.hasWon) return
+    if (game.over || game.hasWon || tile.isFlagged) return
 
     if (!game.started) {
       do {
@@ -79,16 +79,18 @@ export default function Board({ game, dispatch }: BoardProps) {
           <button
             onClick={handleClick}
             onContextMenu={handleRightClick}
+            data-tile
+            style={{ userSelect: 'none' }}
             key={i}
             id={tile.cords.x + ' ' + tile.cords.y}
             className={tile.isOpen ? styles.open : undefined}
           >
             {tile.number && !tile.isBomb ? tile.number : ''}
             {tile.isBomb && !game.started ? (
-              <img draggable="false" style={{ userSelect: 'none' }} src={bomb} alt="Bomb" />
+              <img draggable="false" src={bomb} alt="Bomb" />
             ) : undefined}
             {tile.isFlagged && game.started ? (
-              <img draggable="false" style={{ userSelect: 'none' }} src={flag} alt="Flag" />
+              <img draggable="false" src={flag} alt="Flag" />
             ) : undefined}
           </button>
         )

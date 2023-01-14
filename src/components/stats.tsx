@@ -1,24 +1,24 @@
 import { useEffect, useState } from 'react'
 
-import { Tile } from '../App'
+import { Game } from '../App'
 import styles from '../styles/stats.module.css'
 import uiStyles from '../styles/ui.module.css'
 
-export default function Stats({ gameStarted, tiles }: StatsProps) {
+export default function Stats({ game }: StatsProps) {
   const [timerRunning, setTimerRunning] = useState(false)
   const [timePassed, setTimePassed] = useState(0)
   const [intervalId, setIntervalId] = useState(0)
   const [bombsRemaining, setBombsRemaining] = useState(0)
 
   useEffect(() => {
-    if (gameStarted && !timerRunning) startTimer()
-    if (!gameStarted && timerRunning) stopTimer()
+    if (game.started && !timerRunning) startTimer()
+    if (!game.started && timerRunning) stopTimer()
 
-    const totalBombs = tiles.filter(tile => tile.isBomb === true).length
-    const totalFlags = tiles.filter(tile => tile.isFlagged === true).length
+    const totalBombs = game.tiles.filter(tile => tile.isBomb === true).length
+    const totalFlags = game.tiles.filter(tile => tile.isFlagged === true).length
 
     setBombsRemaining(totalBombs - totalFlags)
-  }, [gameStarted, tiles])
+  }, [game.started, game.tiles])
 
   function startTimer() {
     setTimerRunning(true)
@@ -38,21 +38,23 @@ export default function Stats({ gameStarted, tiles }: StatsProps) {
     clearInterval(intervalId)
   }
 
+  function Info({ label, value }: { label: string; value: string | number }) {
+    return (
+      <div>
+        <span>{label}: </span>
+        <span>{value}</span>
+      </div>
+    )
+  }
+
   return (
     <section className={uiStyles.ui + ' ' + styles.stats}>
-      <div>
-        <span>Timer: </span>
-        <span>{timePassed}</span>
-      </div>
-      <div>
-        <span>Bombs remaining: </span>
-        <span>{bombsRemaining}</span>
-      </div>
+      <Info label="Timer" value={timePassed} />
+      <Info label="Bombs remaining" value={bombsRemaining} />
     </section>
   )
 }
 
-interface StatsProps {
-  gameStarted: boolean
-  tiles: Tile[]
+type StatsProps = {
+  game: Game
 }

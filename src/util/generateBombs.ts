@@ -1,14 +1,15 @@
-import { Tile } from '../App'
+import { Action, Game } from '../App'
 
-export default function generateBombs(
-  width: number,
-  height: number,
-  difficulty: string,
-  tiles: Tile[],
-  setTiles: React.Dispatch<React.SetStateAction<Tile[]>>
-) {
-  const newArr = [...tiles]
-  const numberOfBombs = getNumberOfBombs(difficulty, width * height)
+export default function generateBombs(game: Game, dispatch: React.Dispatch<Action>) {
+  const newTiles = game.tiles.map(tile => {
+    tile.isBomb = false
+    return tile
+  })
+  const newArr = [...newTiles]
+  const numberOfBombs = getNumberOfBombs(
+    game.difficulty,
+    game.dimensions.width * game.dimensions.height
+  )
 
   const finalCords = [] as Cords[]
 
@@ -17,8 +18,8 @@ export default function generateBombs(
 
     do {
       randomCords = {
-        x: Math.ceil(Math.random() * width),
-        y: Math.ceil(Math.random() * height),
+        x: Math.ceil(Math.random() * game.dimensions.width),
+        y: Math.ceil(Math.random() * game.dimensions.height),
       }
 
       // If there are no cords in the finalCords array, break the loop
@@ -34,7 +35,7 @@ export default function generateBombs(
 
     // If the index is not found, throw an error
     if (index === -1) {
-      console.table(tiles)
+      console.table(game.tiles)
       throw new Error(
         `Cant generate bomb, cord not found! Cords: ${randomCords.x} ${randomCords.y}`
       )
@@ -44,9 +45,9 @@ export default function generateBombs(
     newArr[index].isBomb = true
   }
 
-  setTiles(newArr)
+  dispatch({ type: 'set-tiles', payload: newArr })
 
-  interface Cords {
+  type Cords = {
     x: number
     y: number
   }

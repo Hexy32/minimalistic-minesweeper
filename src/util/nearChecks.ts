@@ -1,7 +1,9 @@
+import { Action, Game } from './../App'
+
 import { Tile } from '../App'
 
 export default class nearChecks {
-  static getNumberOfBombsAround({ tile, tiles }: Props) {
+  static getNumberOfBombsAround({ tile, game }: Props) {
     let bombCount = 0
 
     for (let x = tile.cords.x - 1; x <= tile.cords.x + 1; x++) {
@@ -10,7 +12,7 @@ export default class nearChecks {
           continue
         }
 
-        if (tiles.find(({ cords }) => cords.x === x && cords.y === y)?.isBomb === true) {
+        if (game.tiles.find(({ cords }) => cords.x === x && cords.y === y)?.isBomb === true) {
           bombCount += 1
         }
       }
@@ -18,19 +20,19 @@ export default class nearChecks {
     return bombCount
   }
 
-  static openAround({ tile, tiles, setTiles }: SetProps) {
-    const newArr = [...tiles]
+  static openAround({ tile, game, dispatch }: SetProps) {
+    const newArr = [...game.tiles]
     const edgeTiles = [] as Tile[]
 
     for (let x = tile.cords.x - 1; x <= tile.cords.x + 1; x++) {
       for (let y = tile.cords.y - 1; y <= tile.cords.y + 1; y++) {
-        const currentTile = tiles.find(({ cords }) => cords.x === x && cords.y === y)
+        const currentTile = game.tiles.find(({ cords }) => cords.x === x && cords.y === y)
 
         if (!(currentTile && !currentTile.isOpen)) continue
 
-        const i = tiles.indexOf(currentTile)
+        const i = game.tiles.indexOf(currentTile)
         newArr[i].isOpen = true
-        newArr[i].number = this.getNumberOfBombsAround({ tile: currentTile, tiles })
+        newArr[i].number = this.getNumberOfBombsAround({ tile: currentTile, game })
 
         if (tile.cords.x === x && tile.cords.y === y) continue
         if (currentTile && currentTile.number === 0) {
@@ -39,24 +41,19 @@ export default class nearChecks {
       }
     }
 
-    setTiles(newArr)
+    dispatch({ type: 'set-tiles', payload: newArr })
 
     edgeTiles.forEach(tile => {
-      this.openAround({ tile, tiles, setTiles })
+      this.openAround({ tile, game, dispatch })
     })
   }
 }
 
-interface Props {
+type Props = {
   tile: Tile
-  tiles: Tile[]
+  game: Game
 }
 
 interface SetProps extends Props {
-  setTiles: React.Dispatch<React.SetStateAction<Tile[]>>
-}
-
-interface Cords {
-  x: number
-  y: number
+  dispatch: React.Dispatch<Action>
 }

@@ -1,13 +1,9 @@
+import { Action, Difficulty, Game } from '../App'
+
 import styles from '../styles/options.module.css'
 import uiStyles from '../styles/ui.module.css'
 
-export default function Options({
-  difficulty,
-  setDifficulty,
-  setWidth,
-  setHeight,
-  updateBoard,
-}: OptionsProps) {
+export default function Options({ game, dispatch }: OptionsProps) {
   let inputLock = false
   function handleUpdate(currentTarget: HTMLElement) {
     const buttonColor = document.documentElement.style.getPropertyValue('main-color')
@@ -15,7 +11,7 @@ export default function Options({
 
     const inputs = currentTarget.parentElement?.children!
 
-    const difficulty = (inputs[0] as HTMLSelectElement).value
+    const difficulty = (inputs[0] as HTMLSelectElement).value as Difficulty
 
     let width = parseInt((inputs[1] as HTMLInputElement).value)
     let height = parseInt((inputs[2] as HTMLInputElement).value)
@@ -35,10 +31,12 @@ export default function Options({
       return
     }
 
-    setDifficulty(difficulty)
+    dispatch({ type: 'set-difficulty', payload: difficulty })
 
-    if (!isNaN(width)) setWidth(width)
-    if (!isNaN(height)) setHeight(height)
+    if (!isNaN(width)) dispatch({ type: 'set-width', payload: width })
+    if (!isNaN(height)) dispatch({ type: 'set-height', payload: height })
+
+    dispatch({ type: 'regenerate-board' })
   }
 
   const difficulties = ['Easy', 'Medium', 'Hard', 'Master']
@@ -48,7 +46,7 @@ export default function Options({
       <select
         onChange={e => handleUpdate(e.currentTarget)}
         name="Difficulty"
-        defaultValue={difficulty}
+        defaultValue={game.difficulty}
       >
         {difficulties.map(diff => {
           return (
@@ -75,22 +73,14 @@ export default function Options({
         min={5}
       />
       <span />
-      <button
-        className={styles.updateButton}
-        onClick={() => {
-          updateBoard()
-        }}
-      >
+      <button className={styles.updateButton} onClick={e => handleUpdate(e.currentTarget)}>
         Reset Board
       </button>
     </section>
   )
 }
 
-interface OptionsProps {
-  difficulty: string
-  setDifficulty: (value: React.SetStateAction<string>) => void
-  setWidth: (value: React.SetStateAction<number>) => void
-  setHeight: (value: React.SetStateAction<number>) => void
-  updateBoard: () => void
+type OptionsProps = {
+  game: Game
+  dispatch: React.Dispatch<Action>
 }

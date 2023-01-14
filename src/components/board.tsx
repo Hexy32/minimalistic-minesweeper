@@ -1,84 +1,80 @@
-import React, { useEffect, useState } from 'react'
+import { Action, Game } from '../App'
 
-import { Tile } from '../App'
-import bomb from '../assets/bomb.svg'
-import flag from '../assets/flag.svg'
+import React from 'react'
+import bomb from '/assets/bomb.svg'
+import calculateItemSize from '../util/calculateItemSize'
+import flag from '/assets/flag.svg'
 import generateBombs from '../util/generateBombs'
 import nearChecks from '../util/nearChecks'
 import styles from '../styles/board.module.css'
 
-export default function Board({
-  width,
-  height,
-  difficulty,
-  tiles,
-  setTiles,
-  gameStarted,
-  setGameStarted,
-}: BoardProps) {
-  const [gameOver, setGameOver] = useState(false)
+export default function Board({ game, dispatch }: BoardProps) {
+  function handleResize() {
+    calculateItemSize(game.dimensions.width, game.dimensions.height)
+  }
+  window.removeEventListener('resize', handleResize)
+  window.addEventListener('resize', handleResize)
 
-  //Restart game if there is any change to the settings
-  useEffect(() => {
-    setGameStarted(false)
-    setGameOver(false)
-  }, [width, height, difficulty])
+  calculateItemSize(game.dimensions.width, game.dimensions.height)
 
   function handleClick(e: React.MouseEvent<HTMLButtonElement>) {
     const [x, y] = e.currentTarget.id.split(' ')
-    const tile = tiles.find(({ cords }) => cords.x === parseInt(x) && cords.y === parseInt(y))!
-    const i = tiles.indexOf(tile)
+    const tile = game.tiles.find(({ cords }) => cords.x === parseInt(x) && cords.y === parseInt(y))!
+    const i = game.tiles.indexOf(tile)
 
-    const newArr = [...tiles]
+    const newArr = [...game.tiles]
 
-    if (gameOver) return
+    if (game.over) return
 
-    if (!gameStarted) {
+    if (!game.started) {
       do {
-        generateBombs(width, height, difficulty, tiles, setTiles)
+        generateBombs(game, dispatch)
+        console.log('generating bombs')
       } while (tile?.isBomb === true)
 
-      setGameStarted(true)
+      dispatch({ type: 'set-started', payload: true })
     }
 
     if (tile.isBomb) {
       //Game over code here
-      setGameOver(true)
-      setGameStarted(false)
+      dispatch({ type: 'set-over', payload: true })
+      dispatch({ type: 'set-started', payload: false })
       return
     }
 
     newArr[i].isFlagged = false
 
     newArr[i].isOpen = true
-    newArr[i].number = nearChecks.getNumberOfBombsAround({ tile, tiles })
+    newArr[i].number = nearChecks.getNumberOfBombsAround({ tile, game })
 
-    if (newArr[i].number === 0) nearChecks.openAround({ tile, tiles, setTiles })
+    if (newArr[i].number === 0) nearChecks.openAround({ tile, game, dispatch })
 
-    setTiles(newArr)
+    dispatch({ type: 'set-tiles', payload: newArr })
   }
 
   function handleRightClick(e: React.MouseEvent<HTMLButtonElement>) {
     e.preventDefault()
 
-    if (!gameStarted) return
+    if (!game.started) return
 
     const [x, y] = e.currentTarget.id.split(' ')
-    const tile = tiles.find(({ cords }) => cords.x === parseInt(x) && cords.y === parseInt(y))!
-    const i = tiles.indexOf(tile)
+    const tile = game.tiles.find(({ cords }) => cords.x === parseInt(x) && cords.y === parseInt(y))!
+    const i = game.tiles.indexOf(tile)
 
     if (tile.isOpen) return
 
-    const newArr = [...tiles]
+    const newArr = [...game.tiles]
 
     newArr[i].isFlagged = tile.isFlagged ? false : true
 
-    setTiles(newArr)
+    dispatch({ type: 'set-tiles', payload: newArr })
   }
+
+  console.log('Board info: ', game)
 
   return (
     <main className={styles.tilesGrid}>
-      {tiles.map((tile, i) => {
+      {game.tiles.map((tile, i) => {
         return (
           <button
             onClick={handleClick}
@@ -90,10 +86,10 @@ export default function Board({
             }
           >
             {tile.number && !tile.isBomb ? tile.number : ''}
-            {tile.isBomb && !gameStarted ? (
+            {tile.isBomb && !game.started ? (
               <img draggable="false" src={bomb} alt="Bomb" />
             ) : undefined}
-            {tile.isFlagged && gameStarted ? (
+            {tile.isFlagged && game.started ? (
               <img draggable="false" src={flag} alt="Flag" />
             ) : undefined}
           </button>
@@ -103,12 +99,7 @@ export default function Board({
   )
 }
 
-interface BoardProps {
-  width: number
-  height: number
-  difficulty: string
-  tiles: Tile[]
-  setTiles: React.Dispatch<React.SetStateAction<Tile[]>>
-  gameStarted: boolean
-  setGameStarted: React.Dispatch<React.SetStateAction<boolean>>
+type BoardProps = {
+  game: Game
+  dispatch: React.Dispatch<Action>
 }

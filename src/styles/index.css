@@ -48,10 +48,6 @@ button {
 button:hover {
   outline: var(--accent-color) 3px solid;
 }
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
-}
 
 input,
 select {

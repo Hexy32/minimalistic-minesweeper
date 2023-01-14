@@ -100,7 +100,7 @@ export default function App() {
 
   return (
     <div className={styles.app}>
-      {game.hasWon || (game.over && <Completion game={game} dispatch={dispatch} />)}
+      {(game.hasWon || game.over) && <Completion game={game} dispatch={dispatch} />}
       <Options game={game} dispatch={dispatch} />
       <Board game={game} dispatch={dispatch} />
       <Stats game={game} dispatch={dispatch} />

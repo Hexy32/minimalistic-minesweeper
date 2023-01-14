@@ -85,10 +85,10 @@ export default function Board({ game, dispatch }: BoardProps) {
           >
             {tile.number && !tile.isBomb ? tile.number : ''}
             {tile.isBomb && !game.started ? (
-              <img draggable="false" src={bomb} alt="Bomb" />
+              <img draggable="false" style={{ userSelect: 'none' }} src={bomb} alt="Bomb" />
             ) : undefined}
             {tile.isFlagged && game.started ? (
-              <img draggable="false" src={flag} alt="Flag" />
+              <img draggable="false" style={{ userSelect: 'none' }} src={flag} alt="Flag" />
             ) : undefined}
           </button>
         )

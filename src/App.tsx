@@ -143,7 +143,14 @@ export default function App() {
     function handleResize() {
       const root = getComputedStyle(document.querySelector(':root')!)
 
-      setIsMobile(parseInt(root.width.slice(0, root.width.length - 2)) < MOBILE_THRESHOLD)
+      function isTouchDevice() {
+        return 'ontouchstart' in window || navigator.maxTouchPoints > 0
+      }
+
+      // setIsMobile(parseInt(root.width.slice(0, root.width.length - 2)) < MOBILE_THRESHOLD)
+      setIsMobile(
+        parseInt(root.width.slice(0, root.width.length - 2)) < MOBILE_THRESHOLD || isTouchDevice
+      )
     }
 
     handleResize()

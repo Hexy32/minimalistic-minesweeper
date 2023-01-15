@@ -144,10 +144,9 @@ export default function App() {
       const root = getComputedStyle(document.querySelector(':root')!)
 
       function isTouchDevice() {
-        return 'ontouchstart' in window || navigator.maxTouchPoints > 0
+        return 'ontouchstart' in window
       }
 
-      // setIsMobile(parseInt(root.width.slice(0, root.width.length - 2)) < MOBILE_THRESHOLD)
       setIsMobile(
         parseInt(root.width.slice(0, root.width.length - 2)) < MOBILE_THRESHOLD || isTouchDevice
       )

@@ -1,11 +1,13 @@
-import { useEffect, useReducer } from 'react'
+import { useEffect, useReducer, useState } from 'react'
 
 import Board from './components/Board'
 import Completion from './components/Completion'
 import Options from './components/Options'
 import Stats from './components/Stats'
+import Toast from './components/Toast'
 import { createTiles } from './util/createTiles'
 import styles from './styles/app.module.css'
+import toastStyles from './styles/toast.module.css'
 
 const DEFAULT_GAME: Game = {
   tiles: [],
@@ -20,7 +22,11 @@ const DEFAULT_GAME: Game = {
   },
 }
 
+const TOAST_TIMEOUT = 2000
+
 export default function App() {
+  const [currentToast, setCurrentToast] = useState<Toast | undefined>(undefined)
+
   function reducer(game: Game, action: Action) {
     switch (action.type) {
       case 'set-tiles':
@@ -76,6 +82,9 @@ export default function App() {
           started: false,
           over: false,
         }
+      case 'show-toast':
+        setCurrentToast(action.payload)
+        return game
       default:
         throw new Error('Action type not found!')
     }
@@ -89,7 +98,16 @@ export default function App() {
       payload: createTiles(game.dimensions.width, game.dimensions.height),
     })
     function handleKeys(e: KeyboardEvent) {
-      if (e.key === 'r') dispatch({ type: 'regenerate-board' })
+      if (e.key === 'r') {
+        dispatch({ type: 'regenerate-board' })
+        dispatch({
+          type: 'show-toast',
+          payload: {
+            message: `Board reset`,
+            color: '#0c8ce9',
+          },
+        })
+      }
     }
 
     window.removeEventListener('keyup', handleKeys)
@@ -104,8 +122,25 @@ export default function App() {
     }
   }, [game.tiles])
 
+  const [timeoutId, setTimeoutId] = useState<number | undefined>()
+  useEffect(() => {
+    function removeToast() {
+      const toastElem = document.getElementById('toast')
+      toastElem?.classList.add(toastStyles.slideDown)
+      function setUndefined() {
+        setCurrentToast(undefined)
+      }
+      toastElem?.addEventListener('animationend', setUndefined, { once: true })
+    }
+    clearTimeout(timeoutId)
+    setTimeoutId(setTimeout(removeToast, TOAST_TIMEOUT))
+  }, [currentToast])
+
   return (
     <div className={styles.app}>
+      {currentToast ? (
+        <Toast message={currentToast.message} color={currentToast.color} func={currentToast.func} />
+      ) : undefined}
       {(game.hasWon || game.over) && <Completion game={game} dispatch={dispatch} />}
       <Options game={game} dispatch={dispatch} />
       <Board game={game} dispatch={dispatch} />
@@ -127,6 +162,12 @@ export type Game = {
   }
 }
 
+type Toast = {
+  color: string
+  message: string
+  func?: () => void
+}
+
 export type Difficulty = 'easy' | 'medium' | 'hard' | 'master'
 
 export type Action =
@@ -145,6 +186,10 @@ export type Action =
     }
   | {
       type: 'regenerate-board'
+    }
+  | {
+      type: 'show-toast'
+      payload: Toast
     }
 
 export type Tile = {

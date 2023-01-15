@@ -13,21 +13,23 @@ export default function Completion({ game, dispatch }: CompletionProps) {
 
   return (
     <section className={styles.container}>
-      <h2 className={styles.text}>{game.hasWon ? 'You Won!' : 'Game Over'}</h2>
+      <h2 className={game.hasWon ? styles.textWon : styles.textLost}>
+        {game.hasWon ? 'You Won!' : 'Game Over'}
+      </h2>
+      <div>
+        <p className={styles.time}>
+          Time taken: {game.finalTime} second{game.finalTime === 1 || 's'}
+        </p>
+        {!game.hasWon && <p className={styles.time}>Bombs not flagged: {getBombsRemaining()}</p>}
+      </div>
       <button
         className={styles.restart}
         onClick={() => {
           dispatch({ type: 'regenerate-board' })
         }}
       >
-        Restart
+        Reset
       </button>
-      <div>
-        <p className={styles.time}>
-          Time taken: {game.finalTime} second{game.finalTime === 1 || 's'}!
-        </p>
-        {!game.hasWon && <p className={styles.time}>Bombs not flagged: {getBombsRemaining()}</p>}
-      </div>
     </section>
   )
 }

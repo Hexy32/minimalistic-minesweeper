@@ -25,11 +25,14 @@ export default function Stats({ game, dispatch }: StatsProps) {
     //Start timer code
 
     let startTime = Date.now()
-    setIntervalId(
-      setInterval(() => {
-        setTimePassed(Math.round((Date.now() - startTime) / 1000))
-      }, 1000)
-    )
+
+    const calculateTimePassed = () => {
+      setTimePassed(Math.round((Date.now() - startTime) / 1000))
+    }
+
+    calculateTimePassed()
+
+    setIntervalId(setInterval(calculateTimePassed, 1000))
   }
 
   function stopTimer() {

@@ -80,7 +80,7 @@ export default function Board({ game, dispatch }: BoardProps) {
             style={{ userSelect: 'none' }}
             key={i}
             id={tile.cords.x + ' ' + tile.cords.y}
-            className={tile.isOpen ? styles.open : undefined}
+            className={tile.isOpen ? styles.open : styles.update}
           >
             {tile.number && !tile.isBomb ? tile.number : ''}
             {tile.isBomb && !game.started ? (

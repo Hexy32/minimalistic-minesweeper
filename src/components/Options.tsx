@@ -43,6 +43,46 @@ export default function Options({ game, dispatch }: OptionsProps) {
     if (!isNaN(height)) dispatch({ type: 'set-height', payload: height })
 
     dispatch({ type: 'regenerate-board' })
+
+    // Send toast
+    switch (currentTarget.id) {
+      case 'difficulty':
+        dispatch({
+          type: 'show-toast',
+          payload: {
+            message: `Difficulty changed to ${difficulty} and board reset`,
+            color: '#0c8ce9',
+          },
+        })
+        break
+      case 'width':
+        dispatch({
+          type: 'show-toast',
+          payload: {
+            message: `Width changed to ${width} and board reset`,
+            color: '#0c8ce9',
+          },
+        })
+        break
+      case 'height':
+        dispatch({
+          type: 'show-toast',
+          payload: {
+            message: `Height changed to ${height} and board reset`,
+            color: '#0c8ce9',
+          },
+        })
+        break
+      case 'reset':
+        dispatch({
+          type: 'show-toast',
+          payload: {
+            message: `Board reset`,
+            color: '#0c8ce9',
+          },
+        })
+        break
+    }
   }
 
   const difficulties = ['Easy', 'Medium', 'Hard', 'Master']
@@ -87,7 +127,7 @@ export default function Options({ game, dispatch }: OptionsProps) {
         id="reset"
         onClick={e => handleUpdate(e.currentTarget)}
       >
-        Reset Board
+        Reset
       </button>
     </section>
   )

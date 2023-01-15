@@ -20,7 +20,7 @@
 }
 
 .update {
-  animation: update forwards 500ms ease-in-out;
+  animation: update forwards 500ms;
 }
 
 img {
@@ -34,13 +34,10 @@ img {
 
 @keyframes update {
   0% {
-    opacity: 1;
-  }
-  50% {
     opacity: 0;
   }
   100% {
     opacity: 1;
-    transform: rotate(360deg);
+    transform: rotate(90deg);
   }
 }

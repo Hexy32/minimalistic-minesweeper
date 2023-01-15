@@ -1,0 +1,35 @@
+.container {
+  position: absolute;
+  bottom: 20px;
+  z-index: 100;
+
+  padding: 10px 20px;
+
+  border-radius: 10px;
+  box-shadow: 0 0 20px 5px black;
+
+  cursor: pointer;
+}
+
+.slide {
+  animation: slide forwards 200ms;
+}
+
+.slideDown {
+  animation: slide-down forwards 200ms;
+}
+
+@keyframes slide {
+  0% {
+    transform: translateY(200%);
+  }
+  100% {
+    transform: translateY(0%);
+  }
+}
+
+@keyframes slide-down {
+  100% {
+    transform: translateY(200%);
+  }
+}

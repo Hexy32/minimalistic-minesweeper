@@ -9,11 +9,25 @@
   backdrop-filter: blur(10px);
   border-radius: 10px;
   padding: 50px;
+
+  z-index: 100;
 }
 
-.text {
-  margin-inline: auto;
+.textWon,
+.textLost {
+  padding: 20px;
+  border-radius: 5px;
   font-size: 50px;
+  text-align: center;
+  background-color: var(--main-color);
+}
+
+.textWon {
+  color: var(--accent-color);
+}
+
+.textLost {
+  color: #f15252;
 }
 
 .time {
@@ -22,5 +36,7 @@
 }
 
 .restart {
-  font-size: 40px;
+  font-size: 20px;
+  background-color: var(--accent-color);
+  color: black;
 }

@@ -20,7 +20,7 @@
 }
 
 .update {
-  animation: update forwards 500ms;
+  animation: update 500ms;
 }
 
 img {

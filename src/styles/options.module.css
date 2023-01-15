@@ -13,6 +13,8 @@
   margin-top: 50px;
 
   background-color: #272727;
+  box-shadow: rgba(0, 0, 0, 0.288) 0 6px 5px 1px;
+  z-index: 3;
 }
 
 .mobile > * {

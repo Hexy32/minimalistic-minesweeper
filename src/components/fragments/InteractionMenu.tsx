@@ -11,15 +11,6 @@ export default function InteractionMenu({
   position,
   tile,
 }: InteractionMenuProps) {
-  const tileElem = document.getElementById(tile.cords.x + ' ' + tile.cords.y)!
-  tileElem.addEventListener(
-    'blur',
-    () => {
-      close()
-    },
-    { once: true }
-  )
-
   useEffect(() => {
     const root = getComputedStyle(document.querySelector<HTMLHtmlElement>(':root')!)
     const tileSize = root.getPropertyValue('--tileSize')
@@ -46,6 +37,17 @@ export default function InteractionMenu({
     document.getElementById('interactionMenu')!.style.top = positionTop + 'px'
     document.getElementById('interactionMenu')!.style.left = positionLeft + 'px'
   }, [position])
+
+  useEffect(() => {
+    const tileElem = document.getElementById(tile.cords.x + ' ' + tile.cords.y)!
+    tileElem.addEventListener(
+      'blur',
+      () => {
+        setTimeout(close, 100)
+      },
+      { once: true }
+    )
+  }, [])
 
   return (
     <div

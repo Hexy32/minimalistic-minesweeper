@@ -16,7 +16,7 @@ export default function InteractionMenu({
     const tileSize = root.getPropertyValue('--tileSize')
     const interactionMenuElem = getComputedStyle(document.getElementById('interactionMenu')!)
 
-    let positionTop = position.x - turnPxIntoNumber(tileSize) - 50
+    let positionTop = position.x - turnPxIntoNumber(interactionMenuElem.height)
     let positionLeft =
       position.y + turnPxIntoNumber(tileSize) / 2 - turnPxIntoNumber(interactionMenuElem.width) / 2
 
@@ -24,6 +24,10 @@ export default function InteractionMenu({
       positionLeft = turnPxIntoNumber(root.width) - turnPxIntoNumber(interactionMenuElem.width)
     } else if (positionLeft < 0) {
       positionLeft = 0
+    }
+
+    if (positionTop < 0) {
+      positionTop = 0
     }
 
     function turnPxIntoNumber(px: string) {

@@ -7,3 +7,14 @@
 .updateButton:hover {
   border: 1px solid transparent;
 }
+
+.mobile {
+  flex-direction: column;
+  margin-top: 50px;
+
+  background-color: #272727;
+}
+
+.mobile > * {
+  width: 100%;
+}

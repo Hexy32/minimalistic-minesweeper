@@ -17,4 +17,5 @@
   overflow: hidden;
 
   position: relative;
+  height: -webkit-fill-available;
 }

@@ -2,6 +2,7 @@ import { useEffect, useReducer, useState } from 'react'
 
 import Board from './components/Board'
 import Completion from './components/Completion'
+import { Hamburger } from './components/Hamburger'
 import Options from './components/Options'
 import Stats from './components/Stats'
 import Toast from './components/Toast'
@@ -23,9 +24,11 @@ const DEFAULT_GAME: Game = {
 }
 
 const TOAST_TIMEOUT = 2000
+const MOBILE_THRESHOLD = 700
 
 export default function App() {
   const [currentToast, setCurrentToast] = useState<Toast | undefined>(undefined)
+  const [isMobile, setIsMobile] = useState(false)
 
   function reducer(game: Game, action: Action) {
     switch (action.type) {
@@ -136,14 +139,34 @@ export default function App() {
     setTimeoutId(setTimeout(removeToast, TOAST_TIMEOUT))
   }, [currentToast])
 
+  useEffect(() => {
+    function handleResize() {
+      const root = getComputedStyle(document.querySelector(':root')!)
+
+      setIsMobile(parseInt(root.width.slice(0, root.width.length - 2)) < MOBILE_THRESHOLD)
+    }
+
+    handleResize()
+
+    window.addEventListener('resize', handleResize)
+
+    return document.removeEventListener('resize', handleResize)
+  }, [])
+
   return (
     <div className={styles.app}>
       {currentToast ? (
         <Toast message={currentToast.message} color={currentToast.color} func={currentToast.func} />
       ) : undefined}
       {(game.hasWon || game.over) && <Completion game={game} dispatch={dispatch} />}
-      <Options game={game} dispatch={dispatch} />
-      <Board game={game} dispatch={dispatch} />
+      {isMobile ? (
+        <Hamburger>
+          <Options mobile game={game} dispatch={dispatch} />
+        </Hamburger>
+      ) : (
+        <Options game={game} dispatch={dispatch} />
+      )}
+      <Board mobile={isMobile} game={game} dispatch={dispatch} />
       <Stats game={game} dispatch={dispatch} />
     </div>
   )

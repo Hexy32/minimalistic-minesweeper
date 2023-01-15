@@ -1,0 +1,18 @@
+.wrapper {
+  top: 0;
+  left: 0;
+  position: absolute;
+  display: flex;
+  gap: 20px;
+  z-index: 10;
+}
+
+.buttons {
+  height: 70px;
+  aspect-ratio: 1/1;
+  background-color: white;
+}
+
+.icons {
+  width: 100%;
+}

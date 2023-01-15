@@ -3,7 +3,7 @@ import { Action, Difficulty, Game } from '../App'
 import styles from '../styles/options.module.css'
 import uiStyles from '../styles/ui.module.css'
 
-export default function Options({ game, dispatch }: OptionsProps) {
+export default function Options({ mobile, game, dispatch }: OptionsProps) {
   let inputLock = false
   function handleUpdate(currentTarget: HTMLElement) {
     const buttonColor = document.documentElement.style.getPropertyValue('main-color')
@@ -88,7 +88,7 @@ export default function Options({ game, dispatch }: OptionsProps) {
   const difficulties = ['Easy', 'Medium', 'Hard', 'Master']
 
   return (
-    <section className={uiStyles.ui}>
+    <section className={uiStyles.ui + ' ' + (mobile ? styles.mobile : undefined)}>
       <select
         onChange={e => handleUpdate(e.currentTarget)}
         name="Difficulty"
@@ -134,6 +134,7 @@ export default function Options({ game, dispatch }: OptionsProps) {
 }
 
 type OptionsProps = {
+  mobile?: boolean
   game: Game
   dispatch: React.Dispatch<Action>
 }

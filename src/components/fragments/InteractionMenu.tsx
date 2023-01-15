@@ -11,6 +11,15 @@ export default function InteractionMenu({
   position,
   tile,
 }: InteractionMenuProps) {
+  const tileElem = document.getElementById(tile.cords.x + ' ' + tile.cords.y)!
+  tileElem.addEventListener(
+    'blur',
+    () => {
+      close()
+    },
+    { once: true }
+  )
+
   useEffect(() => {
     const root = getComputedStyle(document.querySelector<HTMLHtmlElement>(':root')!)
     const tileSize = root.getPropertyValue('--tileSize')

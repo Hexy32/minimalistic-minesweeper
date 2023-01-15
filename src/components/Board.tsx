@@ -1,5 +1,5 @@
 import { Action, Game, Tile } from '../App'
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 
 import InteractionMenu from './fragments/InteractionMenu'
 import bomb from '/assets/bomb.svg'
@@ -62,6 +62,10 @@ export default function Board({ mobile, game, dispatch }: BoardProps) {
   function handleClick(e: React.MouseEvent<HTMLButtonElement>) {
     const [x, y] = e.currentTarget.id.split(' ')
     const tile = game.tiles.find(({ cords }) => cords.x === parseInt(x) && cords.y === parseInt(y))!
+
+    setInteractionMenu({
+      open: false,
+    })
 
     if (game.over || game.hasWon || tile.isOpen) return
 

@@ -40,13 +40,15 @@ export default function InteractionMenu({
 
   useEffect(() => {
     const tileElem = document.getElementById(tile.cords.x + ' ' + tile.cords.y)!
-    tileElem.addEventListener(
-      'blur',
-      () => {
-        setTimeout(close, 100)
-      },
-      { once: true }
-    )
+    // TODO: figure out how to not need this setTimeout
+
+    function handleBlur(e: FocusEvent) {
+      const clickedTarget = e.relatedTarget as unknown as HTMLElement | null
+      if (clickedTarget && clickedTarget.id === 'interaction') return
+      close()
+    }
+
+    tileElem.addEventListener('blur', handleBlur, { once: true })
   }, [])
 
   return (
@@ -60,6 +62,7 @@ export default function InteractionMenu({
       }}
     >
       <button
+        id="interaction"
         onClick={() => {
           openTile(tile)
           close()
@@ -69,6 +72,7 @@ export default function InteractionMenu({
         <img className={styles.icons} draggable="false" src={shovel} alt="Open tile" />
       </button>
       <button
+        id="interaction"
         onClick={() => {
           flagTile(tile)
           close()

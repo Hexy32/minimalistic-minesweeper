@@ -11,14 +11,16 @@
   padding: 50px;
 
   z-index: 3;
+  animation: forwards slide-up 500ms;
 }
 
 .textWon,
 .textLost {
-  padding: 20px;
+  padding: 10px 20px;
   border-radius: 5px;
   font-size: 50px;
   text-align: center;
+  line-height: normal;
   background-color: var(--main-color);
 }
 
@@ -39,4 +41,15 @@
   font-size: 20px;
   background-color: var(--accent-color);
   color: black;
+}
+
+@keyframes slide-up {
+  0% {
+    opacity: 0;
+    transform: translateY(50%);
+  }
+  100% {
+    opacity: 1;
+    transition: translateY(0);
+  }
 }

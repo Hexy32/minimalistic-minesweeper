@@ -1,4 +1,4 @@
-import { useEffect, useReducer, useState } from 'react'
+import { useEffect, useMemo, useReducer, useRef, useState } from 'react'
 
 import Board from './components/Board'
 import Completion from './components/Completion'
@@ -78,16 +78,25 @@ export default function App() {
   }, [])
 
   //Win and loose conditions
-  useEffect(() => {
+  const hasWon = useMemo(() => {
     if (!game.tiles.some(tile => !tile.isOpen && !tile.isBomb) && game.started) {
-      dispatch({ type: 'set-has-won', payload: true })
+      return true
     } else if (game.hasWon) {
-      dispatch({ type: 'set-has-won', payload: false })
+      return false
     }
-  }, [game.tiles])
+  }, [game.tiles, game.started])
+
+  useEffect(() => {
+    if (hasWon === undefined || hasWon === game.hasWon) return
+
+    if (hasWon) dispatch({ type: 'set-has-won', payload: true })
+    else dispatch({ type: 'set-has-won', payload: false })
+  }, [hasWon])
+
+  console.log(`App.tsx re-rendered!`)
 
   //Toast logic
-  const [timeoutId, setTimeoutId] = useState<number | undefined>()
+  const timeoutIdRef = useRef<number>()
   useEffect(() => {
     function removeToast() {
       const toastElem = document.getElementById('toast')
@@ -97,8 +106,9 @@ export default function App() {
       }
       toastElem?.addEventListener('animationend', setUndefined, { once: true })
     }
-    clearTimeout(timeoutId)
-    setTimeoutId(setTimeout(removeToast, TOAST_TIMEOUT))
+
+    timeoutIdRef.current = setTimeout(removeToast, TOAST_TIMEOUT)
+    return () => clearTimeout(timeoutIdRef.current)
   }, [game.currentToast])
 
   return (

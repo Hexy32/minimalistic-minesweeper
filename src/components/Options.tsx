@@ -1,4 +1,4 @@
-import { Action, Difficulty, Game } from '../App'
+import { Action, Difficulty, Game } from '../types'
 
 import styles from '../styles/options.module.css'
 import uiStyles from '../styles/ui.module.css'

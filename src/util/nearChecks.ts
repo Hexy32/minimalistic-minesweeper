@@ -1,6 +1,4 @@
-import { Action, Game } from './../App'
-
-import { Tile } from '../App'
+import { Action, Game, Tile } from './../types'
 
 export default class nearChecks {
   static getNumberOfBombsAround({ tile, game }: Props) {

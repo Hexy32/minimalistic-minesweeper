@@ -1,4 +1,4 @@
-import { Action, Game } from '../App'
+import { Action, Game } from '../types'
 
 export default function generateBombs(game: Game, dispatch: React.Dispatch<Action>) {
   const newTiles = game.tiles.map(tile => {

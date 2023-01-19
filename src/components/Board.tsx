@@ -1,5 +1,5 @@
-import { Action, Game, Tile } from '../App'
-import React, { useState } from 'react'
+import { Action, Game, Tile } from '../types'
+import React, { useEffect, useState } from 'react'
 
 import InteractionMenu from './fragments/InteractionMenu'
 import bomb from '/assets/bomb.svg'
@@ -18,12 +18,14 @@ type InteractionMenu =
 export default function Board({ mobile, game, dispatch }: BoardProps) {
   const [interactionMenu, setInteractionMenu] = useState<InteractionMenu>({ open: false })
 
-  function handleResize() {
-    calculateItemSize(game.dimensions.width, game.dimensions.height)
-  }
+  useEffect(() => {
+    function handleResize() {
+      calculateItemSize(game.dimensions.width, game.dimensions.height)
+    }
 
-  window.removeEventListener('resize', handleResize)
-  window.addEventListener('resize', handleResize)
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
 
   calculateItemSize(game.dimensions.width, game.dimensions.height)
 

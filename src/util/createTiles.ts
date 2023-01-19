@@ -1,4 +1,4 @@
-import { Tile } from '../App'
+import { Tile } from '../types'
 
 export function createTiles(width: number, height: number) {
   const newArr = [] as Tile[]

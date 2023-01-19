@@ -1,4 +1,4 @@
-import { Action, Game } from '../App'
+import { Action, Game } from '../types'
 import { useEffect, useState } from 'react'
 
 import styles from '../styles/stats.module.css'

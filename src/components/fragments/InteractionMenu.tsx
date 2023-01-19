@@ -1,4 +1,4 @@
-import { Tile } from '../../App'
+import { Tile } from '../../types'
 import flag from '/assets/flag.svg'
 import shovel from '/assets/shovel.svg'
 import styles from '../../styles/interactionMenu.module.css'

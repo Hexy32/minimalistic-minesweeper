@@ -1,5 +1,3 @@
-import getSmallest from './getSmallest'
-
 export default function calculateItemSize(tilesWidth: number, tilesHeight: number) {
   const root = document.documentElement
 
@@ -22,7 +20,7 @@ export default function calculateItemSize(tilesWidth: number, tilesHeight: numbe
     return value
   }
 
-  const finalSize = getSmallest([blockLimit(), inlineLimit()])
+  const finalSize = Math.min(blockLimit(), inlineLimit())
 
   root.style.setProperty('--tileSize', finalSize.toString() + 'px')
 

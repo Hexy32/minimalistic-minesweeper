@@ -123,7 +123,7 @@ export default function Board({ mobile, game, dispatch }: BoardProps) {
             onClick={handleClick}
             onContextMenu={handleRightClick}
             data-tile
-            style={{ userSelect: 'none' }}
+            style={{ userSelect: 'none', background: tile.isBomb ? '' : '' }}
             key={i}
             id={tile.cords.x + ' ' + tile.cords.y}
             className={tile.isOpen ? styles.open : styles.update}

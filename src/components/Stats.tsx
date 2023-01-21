@@ -1,5 +1,5 @@
 import { Action, Game } from '../types'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 import styles from '../styles/stats.module.css'
 import uiStyles from '../styles/ui.module.css'
@@ -7,8 +7,9 @@ import uiStyles from '../styles/ui.module.css'
 export default function Stats({ game, dispatch }: StatsProps) {
   const [timerRunning, setTimerRunning] = useState(false)
   const [timePassed, setTimePassed] = useState(0)
-  const [intervalId, setIntervalId] = useState(0)
   const [bombsRemaining, setBombsRemaining] = useState(0)
+
+  const intervalIdRef = useRef<number>(0)
 
   useEffect(() => {
     if (game.started && !timerRunning) startTimer()
@@ -32,14 +33,14 @@ export default function Stats({ game, dispatch }: StatsProps) {
 
     calculateTimePassed()
 
-    setIntervalId(setInterval(calculateTimePassed, 1000))
+    intervalIdRef.current = setInterval(calculateTimePassed, 1000)
   }
 
   function stopTimer() {
     dispatch({ type: 'set-final-time', payload: timePassed })
     setTimerRunning(false)
     //Stop timer code
-    clearInterval(intervalId)
+    clearInterval(intervalIdRef.current)
   }
 
   function Info({ label, value }: { label: string; value: string | number }) {

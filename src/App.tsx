@@ -17,7 +17,7 @@ const DEFAULT_GAME: Game = {
   started: false,
   over: false,
   hasWon: false,
-  finalTime: 0,
+  finalTime: -1,
   difficulty: 'easy',
   dimensions: {
     width: 10,
@@ -93,8 +93,6 @@ export default function App() {
     else dispatch({ type: 'set-has-won', payload: false })
   }, [hasWon])
 
-  console.log(`App.tsx re-rendered!`)
-
   //Toast logic
   const timeoutIdRef = useRef<number>()
   useEffect(() => {
@@ -113,6 +111,7 @@ export default function App() {
 
   return (
     <div className={styles.app}>
+      {/* Toasts to alert user when there is a state change */}
       {game.currentToast ? (
         <Toast
           message={game.currentToast.message}
@@ -120,7 +119,11 @@ export default function App() {
           func={game.currentToast.func}
         />
       ) : undefined}
-      {(game.hasWon || game.over) && <Completion game={game} dispatch={dispatch} />}
+
+      {/* Show the user the end-game stats */}
+      {(game.over || game.hasWon) && <Completion game={game} dispatch={dispatch} />}
+
+      {/* Based on weather user has a touchscreen/small device, show the options */}
       {isMobile ? (
         <Hamburger>
           <Options mobile game={game} dispatch={dispatch} />
@@ -128,7 +131,11 @@ export default function App() {
       ) : (
         <Options game={game} dispatch={dispatch} />
       )}
+
+      {/* The main game board */}
       <Board mobile={isMobile} game={game} dispatch={dispatch} />
+
+      {/* The ongoing game stats at the bottom of the screen */}
       <Stats game={game} dispatch={dispatch} />
     </div>
   )

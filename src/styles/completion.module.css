@@ -1,14 +1,19 @@
 .container {
+  --border-radius: 20px;
+
   position: absolute;
   display: flex;
-  gap: 50px;
   flex-direction: column;
+  gap: 1.5rem;
 
   background-color: #75757554;
   color: white;
   backdrop-filter: blur(10px);
-  border-radius: 10px;
-  padding: 50px;
+  border-radius: var(--border-radius);
+  padding: 3rem;
+
+  overflow-y: auto;
+  max-height: 90vh;
 
   z-index: 3;
   animation: forwards slide-up 500ms;
@@ -17,7 +22,7 @@
 .textWon,
 .textLost {
   padding: 10px 20px;
-  border-radius: 5px;
+  border-radius: var(--border-radius);
   font-size: 50px;
   text-align: center;
   line-height: normal;
@@ -32,9 +37,29 @@
   color: #f15252;
 }
 
-.time {
+.section {
+  background-color: var(--background-color);
+  border-radius: var(--border-radius);
+}
+
+.sectionTitle {
+  padding: 10px 20px;
+  background-color: var(--main-color);
+  border-radius: var(--border-radius);
+  font-weight: bold;
   text-align: center;
-  font-size: 20px;
+}
+
+.list {
+  padding: 10px 20px;
+}
+
+.stats {
+  font-size: 18px;
+
+  display: flex;
+  justify-content: space-between;
+  gap: 7rem;
 }
 
 .restart {

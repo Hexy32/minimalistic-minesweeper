@@ -53,7 +53,7 @@ export default function generateBombs(game: Game, dispatch: React.Dispatch<Actio
   }
 }
 
-function getNumberOfBombs(difficulty: string, tilesTotal: number) {
+export function getNumberOfBombs(difficulty: string, tilesTotal: number) {
   switch (difficulty) {
     case 'easy':
       return Math.round(tilesTotal * 0.1)

@@ -53,6 +53,7 @@ export default function reducer(game: Game, action: Action) {
     case 'regenerate-board':
       return {
         ...game,
+        finalTime: -1,
         tiles: createTiles(game.dimensions.width, game.dimensions.height),
         started: false,
         over: false,

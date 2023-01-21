@@ -15,7 +15,7 @@
   overflow-y: auto;
   max-height: 90vh;
 
-  z-index: 5;
+  z-index: 10;
   animation: forwards slide-up 500ms;
 }
 

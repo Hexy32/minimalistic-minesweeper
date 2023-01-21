@@ -15,7 +15,7 @@
   overflow-y: auto;
   max-height: 90vh;
 
-  z-index: 3;
+  z-index: 5;
   animation: forwards slide-up 500ms;
 }
 
@@ -53,13 +53,12 @@
 .list {
   padding: 10px 20px;
 }
-
 .stats {
   font-size: 18px;
 
   display: flex;
   justify-content: space-between;
-  gap: 7rem;
+  gap: 15%;
 }
 
 .restart {

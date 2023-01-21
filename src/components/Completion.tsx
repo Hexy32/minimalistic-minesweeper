@@ -105,7 +105,7 @@ export default function Completion({ game, dispatch }: CompletionProps) {
     savedData && savedData.settingsSpecificStats[findIndexFromSettings(savedData, game)]
 
   function addSuffix(content: string | number | null, suffix: string, backup: string) {
-    if (content) {
+    if (content !== null) {
       return content + suffix
     } else {
       return backup

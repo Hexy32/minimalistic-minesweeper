@@ -190,10 +190,10 @@ export default function Completion({ game, dispatch }: CompletionProps) {
             {section.data.map((stat, i) => {
               if (shouldShowStat(stat, game)) {
                 return (
-                  <ul key={i} className={styles.stats}>
+                  <li key={i} className={styles.stats}>
                     <span className={styles.label}>{stat.label}:</span>
                     <span className={styles.data}>{stat.data}</span>
-                  </ul>
+                  </li>
                 )
               }
             })}

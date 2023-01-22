@@ -8,7 +8,10 @@
 
   background-color: #75757554;
   color: white;
+
   backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+
   border-radius: var(--border-radius);
   padding: 3rem;
 

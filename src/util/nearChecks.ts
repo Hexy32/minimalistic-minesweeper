@@ -18,7 +18,24 @@ export default class nearChecks {
     return bombCount
   }
 
-  static openAround({ tile, game, dispatch }: SetProps) {
+  static getNumberOfFlagsAround({ tile, game }: Props) {
+    let flagCount = 0
+
+    for (let x = tile.cords.x - 1; x <= tile.cords.x + 1; x++) {
+      for (let y = tile.cords.y - 1; y <= tile.cords.y + 1; y++) {
+        if (x === tile.cords.x && y === tile.cords.y) {
+          continue
+        }
+
+        if (game.tiles.find(({ cords }) => cords.x === x && cords.y === y)?.isFlagged === true) {
+          flagCount += 1
+        }
+      }
+    }
+    return flagCount
+  }
+
+  static recursivelyOpenAround({ tile, game, dispatch }: SetProps) {
     const newArr = [...game.tiles]
     const edgeTiles = [] as Tile[]
 
@@ -43,8 +60,30 @@ export default class nearChecks {
     dispatch({ type: 'set-tiles', payload: newArr })
 
     edgeTiles.forEach(tile => {
-      this.openAround({ tile, game, dispatch })
+      this.recursivelyOpenAround({ tile, game, dispatch })
     })
+  }
+
+  // In Minesweeper, chording may refer to a tactic which is traditionally done
+  // to uncover all eight adjacent squares if it has the correct number of flags.
+  static chord({ tile, game }: Props) {
+    const tilesToOpen: Tile[] = []
+
+    for (let x = tile.cords.x - 1; x <= tile.cords.x + 1; x++) {
+      for (let y = tile.cords.y - 1; y <= tile.cords.y + 1; y++) {
+        if (x === tile.cords.x && y === tile.cords.y) {
+          continue
+        }
+
+        const currentTile = game.tiles.find(({ cords }) => cords.x === x && cords.y === y)
+
+        if (!currentTile || currentTile.isOpen || currentTile.isFlagged) continue
+
+        tilesToOpen.push(currentTile)
+      }
+    }
+
+    return tilesToOpen
   }
 }
 

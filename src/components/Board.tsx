@@ -44,7 +44,7 @@ export default function Board({ mobile, game, dispatch }: BoardProps) {
     newArr[i].number = nearChecks.getNumberOfBombsAround({ tile, game })
 
     //Start recursive sweep if the tile was a 0
-    if (newArr[i].number === 0) nearChecks.openAround({ tile, game, dispatch })
+    if (newArr[i].number === 0) nearChecks.recursivelyOpenAround({ tile, game, dispatch })
 
     dispatch({ type: 'set-tiles', payload: newArr })
   }
@@ -69,7 +69,20 @@ export default function Board({ mobile, game, dispatch }: BoardProps) {
       open: false,
     })
 
-    if (game.over || game.hasWon || tile.isOpen) return
+    if (game.over || game.hasWon) return
+
+    if (tile.isOpen) {
+      if (tile.number === 0) return
+
+      const numberOfFlags = nearChecks.getNumberOfFlagsAround({ tile, game })
+      if (numberOfFlags < tile.number) return
+
+      const tilesToOpen = nearChecks.chord({ tile, game })
+
+      console.log(tilesToOpen)
+
+      return tilesToOpen.forEach(tile => openTile(tile))
+    }
 
     if (!game.started) {
       //For initial game start, generate the bombs
@@ -126,8 +139,7 @@ export default function Board({ mobile, game, dispatch }: BoardProps) {
             style={{ userSelect: 'none', background: tile.isBomb ? '' : '' }}
             key={i}
             id={tile.cords.x + ' ' + tile.cords.y}
-            className={tile.isOpen ? styles.open : styles.update}
-          >
+            className={tile.isOpen ? styles.open : styles.update}>
             {tile.number && !tile.isBomb ? tile.number : ''}
             {tile.isBomb && !game.started ? (
               <img draggable="false" src={bomb} alt="Bomb" />

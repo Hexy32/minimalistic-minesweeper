@@ -27,10 +27,8 @@ export type Tile = {
     y: number
   }
   isBomb: boolean
-  isOpen: boolean
   isFlagged: boolean
-  number?: number
-}
+} & ({ isOpen: true; number: number } | { isOpen: false; number: undefined })
 
 export type Game = {
   tiles: Tile[]

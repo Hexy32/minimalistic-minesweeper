@@ -79,6 +79,15 @@ export default function Board({ mobile, game, dispatch }: BoardProps) {
 
       const tilesToOpen = nearChecks.chord({ tile, game })
 
+      const tilesWithBomb = tilesToOpen.filter(tile => tile.isBomb)
+
+      // End the game if there was a bomb that was not flagged.
+      if (tilesWithBomb.length > 0) {
+        dispatch({ type: 'set-over', payload: true })
+        dispatch({ type: 'set-started', payload: false })
+        return
+      }
+
       console.log(tilesToOpen)
 
       return tilesToOpen.forEach(tile => openTile(tile))

@@ -2,7 +2,7 @@ import { Action, Game } from '../types'
 
 import { createTiles } from './createTiles'
 
-export default function reducer(game: Game, action: Action) {
+export default function reducer(game: Game, action: Action): Game {
   switch (action.type) {
     case 'set-tiles':
       return {

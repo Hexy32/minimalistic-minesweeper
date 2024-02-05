@@ -129,21 +129,21 @@ export default function Board({ mobile, game, dispatch }: BoardProps) {
 	}
 
 	function getBackgroundColor(n: number) {
-		const colorOpacity = '40'
 		switch (n) {
 			case 0:
 				return '#2e2e2e'
 			case 1:
-				return '#225071' + colorOpacity
+				return '#004cff'
 			case 2:
-				return '#1d791d' + colorOpacity
+				return '#00ff00'
 			case 3:
 			case 6:
-				return '#7a1e1e' + colorOpacity
+				return '#ff0000'
 			case 4:
-				return '#791d79' + colorOpacity
+				return '#ff00ff'
 			case 5:
-				return '#78791d' + colorOpacity
+			case 7:
+				return '#ffe500'
 		}
 	}
 
@@ -167,7 +167,7 @@ export default function Board({ mobile, game, dispatch }: BoardProps) {
 						style={{
 							userSelect: 'none',
 							background: tile.isBomb ? '' : '',
-							backgroundColor:
+							color:
 								!tile.isOpen || (tile.isOpen && tile.isBomb)
 									? 'var(--main-color)'
 									: getBackgroundColor(tile.number ?? 0),

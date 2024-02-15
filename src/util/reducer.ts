@@ -58,6 +58,11 @@ export default function reducer(game: Game, action: Action): Game {
         started: false,
         over: false,
       }
+    case 'set-style':
+      return {
+        ...game,
+        style: action.payload
+      }
     case 'show-toast':
       return { ...game, currentToast: action.payload }
     default:

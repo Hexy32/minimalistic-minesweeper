@@ -128,22 +128,31 @@ export default function Board({ mobile, game, dispatch }: BoardProps) {
     flagTile(tile)
   }
 
-  function getBackgroundColor(n: number) {
+  function getColor(n: number | undefined, tile: Tile) {
+    if (!tile.isOpen || (tile.isOpen && tile.isBomb)) {
+      return 'var(--main-color)'
+    }
+
+    const colorOpacity = '70'
+
     switch (n) {
+      case undefined:
       case 0:
         return '#2e2e2e'
+      case 9:
       case 1:
-        return '#004cff'
+        return game.style === 'text' ? '#004cff' : '#225071' + colorOpacity
       case 2:
-        return '#00ff00'
+        return game.style === 'text' ? '#00ff00' : '#1d791d' + colorOpacity
       case 3:
       case 6:
-        return '#ff0000'
+        return game.style === 'text' ? '#ff0000' : '#7a1e1e' + colorOpacity
+      case 8:
       case 4:
-        return '#ff00ff'
+        return game.style === 'text' ? '#ff00ff' : '#791d79' + colorOpacity
       case 5:
       case 7:
-        return '#ffe500'
+        return game.style === 'text' ? '#ffe500' : '#78791d' + colorOpacity
     }
   }
 
@@ -167,10 +176,13 @@ export default function Board({ mobile, game, dispatch }: BoardProps) {
             style={{
               userSelect: 'none',
               background: tile.isBomb ? '' : '',
-              color:
-                !tile.isOpen || (tile.isOpen && tile.isBomb)
-                  ? 'var(--main-color)'
-                  : getBackgroundColor(tile.number ?? 0),
+              color: game.style === 'text' ? getColor(tile.number, tile) : 'white',
+              backgroundColor:
+                game.style === 'blocks'
+                  ? getColor(tile.number, tile)
+                  : tile.isOpen
+                  ? '#2e2e2e'
+                  : 'var(--main-color)',
             }}
             key={i}
             id={tile.cords.x + ' ' + tile.cords.y}

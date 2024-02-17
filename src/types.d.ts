@@ -2,24 +2,30 @@ export type Difficulty = 'easy' | 'medium' | 'hard' | 'master'
 export type Action =
   | { type: 'set-difficulty'; payload: Difficulty }
   | {
-      type: 'set-width' | 'set-height' | 'set-final-time'
-      payload: number
-    }
+    type: 'set-width' | 'set-height' | 'set-final-time'
+    payload: number
+  }
   | {
-      type: 'set-started' | 'set-over' | 'set-has-won'
-      payload: boolean
-    }
+    type: 'set-started' | 'set-over' | 'set-has-won'
+    payload: boolean
+  }
   | {
-      type: 'set-tiles'
-      payload: Tile[]
-    }
+    type: 'set-tiles'
+    payload: Tile[]
+  }
   | {
-      type: 'regenerate-board'
-    }
+    type: 'regenerate-board'
+  }
   | {
-      type: 'show-toast'
-      payload: Toast | undefined
-    }
+    type: 'show-toast'
+    payload: Toast | undefined
+  }
+  | {
+    type: 'set-style'
+    payload: Style
+  }
+
+export type Style = 'default' | 'text' | 'blocks'
 
 export type Tile = {
   cords: {
@@ -37,6 +43,7 @@ export type Game = {
   hasWon: boolean
   finalTime: number
   difficulty: Difficulty
+  style: Style
   currentToast?: Toast
   dimensions: {
     width: number

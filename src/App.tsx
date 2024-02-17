@@ -19,6 +19,7 @@ const DEFAULT_GAME: Game = {
   hasWon: false,
   finalTime: -1,
   difficulty: 'easy',
+  style: 'default',
   dimensions: {
     width: 10,
     height: 10,

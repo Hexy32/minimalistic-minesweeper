@@ -1,4 +1,4 @@
-import { Action, Difficulty, Game } from '../types'
+import { Action, Difficulty, Game, Style } from '../types'
 
 import styles from '../styles/options.module.css'
 import uiStyles from '../styles/ui.module.css'
@@ -12,6 +12,7 @@ export default function Options({ mobile, game, dispatch }: OptionsProps) {
     const inputs = currentTarget.parentElement?.children!
 
     const difficulty = (inputs[0] as HTMLSelectElement).value as Difficulty
+    const boardStyle = (inputs[3] as HTMLSelectElement).value as Style
 
     let width = parseInt((inputs[1] as HTMLInputElement).value)
     let height = parseInt((inputs[2] as HTMLInputElement).value)
@@ -38,11 +39,12 @@ export default function Options({ mobile, game, dispatch }: OptionsProps) {
     }
 
     dispatch({ type: 'set-difficulty', payload: difficulty })
+    dispatch({ type: 'set-style', payload: boardStyle })
 
     if (!isNaN(width)) dispatch({ type: 'set-width', payload: width })
     if (!isNaN(height)) dispatch({ type: 'set-height', payload: height })
 
-    dispatch({ type: 'regenerate-board' })
+    if (currentTarget.id !== 'style') dispatch({ type: 'regenerate-board' })
 
     // Send toast
     switch (currentTarget.id) {
@@ -82,10 +84,20 @@ export default function Options({ mobile, game, dispatch }: OptionsProps) {
           },
         })
         break
+      case 'style':
+        dispatch({
+          type: 'show-toast',
+          payload: {
+            message: `Style changed to ${boardStyle}`,
+            color: '#0c8ce9',
+          },
+        })
+        break
     }
   }
 
   const difficulties = ['Easy', 'Medium', 'Hard', 'Master']
+  const boardStyles = ['Default', 'Text', 'Blocks']
 
   return (
     <section className={uiStyles.ui + ' ' + (mobile ? styles.mobile : undefined)}>
@@ -93,8 +105,7 @@ export default function Options({ mobile, game, dispatch }: OptionsProps) {
         onChange={e => handleUpdate(e.currentTarget)}
         name="Difficulty"
         id="difficulty"
-        defaultValue={game.difficulty}
-      >
+        defaultValue={game.difficulty}>
         {difficulties.map(diff => {
           return (
             <option key={diff} value={diff.toLowerCase()}>
@@ -121,12 +132,21 @@ export default function Options({ mobile, game, dispatch }: OptionsProps) {
         max={50}
         min={5}
       />
-      <span />
+      <select
+        name="Style"
+        id="style"
+        onChange={e => handleUpdate(e.currentTarget)}
+        defaultValue={game.style}>
+        {boardStyles.map(style => (
+          <option key={style} value={style.toLowerCase()}>
+            {style}
+          </option>
+        ))}
+      </select>
       <button
         className={styles.updateButton}
         id="reset"
-        onClick={e => handleUpdate(e.currentTarget)}
-      >
+        onClick={e => handleUpdate(e.currentTarget)}>
         Reset
       </button>
     </section>
